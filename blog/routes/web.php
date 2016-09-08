@@ -10,7 +10,10 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::get('/contact', 'PagesController@getContact');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/about', 'PagesController@getAbout');
+
+Route::get('/', 'PagesController@getIndex');
+
+

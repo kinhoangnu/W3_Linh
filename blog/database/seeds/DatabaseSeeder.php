@@ -12,5 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        DB::table('posts')->insert([
+            'id' => '1',
+            'title' => 'RECREATE',
+            'body' => 'First poster',
+            'slug' => 'page1'
+        ]);
     }
 }

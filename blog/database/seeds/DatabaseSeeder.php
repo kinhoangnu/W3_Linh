@@ -18,5 +18,11 @@ class DatabaseSeeder extends Seeder
             'body' => 'First poster',
             'slug' => 'page1'
         ]);
+        DB::table('users')->insert([
+            'id' => '1',
+            'name' => 'linh',
+            'email' => 'linhhoang_o00o@yahoo.com',
+            'password' => '123456'
+        ]);
     }
 }

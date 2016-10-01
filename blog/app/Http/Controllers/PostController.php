@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
+use App\Category;
 use Session;
+use Image;
 
 
 class PostController extends Controller
@@ -35,7 +38,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('posts.create')->withCategories($categories)->withTags($tags);
     }
 
     /**
@@ -48,17 +53,33 @@ class PostController extends Controller
     {
         //validate the data
         $this->validate($request, array(
-                'title'=>'required|max:255',
-                'slug'=>'required|alpha_dash|min:5|max:255|unique:posts,slug',
-                'body'=>'required'
+                'title'       =>'required|max:255',
+                'slug'        =>'required|alpha_dash|min:5|max:255|unique:posts,slug',
+                'category_id' => 'required|integer',
+                'body'        =>'required'
             ));
 
         //store in the database
         $post = new Post;
+
         $post->title = $request->title;
         $post->slug = $request->slug;
+        $post->category_id = $request->category_id;
         $post->body = $request->body;
+
+        //image save
+        if ($request->hasFile('featured_image')){
+            $image = $request->file('featured_image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('images\\'. $filename);
+            Image::make($image)->resize(800, 400)->save($location);
+
+            $post->image = $filename;
+        }
+
         $post->save();
+
+        $post->tags()->sync($request->tags, false);
 
         Session::flash('success', 'The blog post has been saved successfully!');
 
@@ -90,7 +111,20 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        return view('posts.edit')->withPost($post);
+        $categories = Category::all();
+        $cats = array();
+        foreach ($categories as $category){
+            $cats[$category->id] = $category->name;
+        }
+
+        $tags = Tag::all();
+        $tags2 = array();
+        foreach ($tags as $tag) {
+            $tags2[$tag->id] = $tag->name;
+        }
+
+        return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tags2);
+
     }
 
     /**
@@ -106,12 +140,14 @@ class PostController extends Controller
         if ($request->input('slug') == $post->slug) {
             $this->validate($request, array(
                 'title'=>'required|max:50',
+                'category_id' => 'required|integer',
                 'body'=>'required'
                 ));
         } else {
         $this->validate($request, array(
                 'title'=>'required|max:50',
                 'slug'=>'required|alpha_dash|min:5|max:255|unique:posts,slug',
+                'category_id' => 'required|integer',
                 'body'=>'required'
             ));
     }
@@ -119,8 +155,16 @@ class PostController extends Controller
 
         $post->title = $request->input('title');
         $post->slug=$request->input('slug');
+        $post->category_id = $request->input('category_id');
         $post->body = $request->input('body');
         $post->save();
+
+        if (isset($request->tags)){
+        $post->tags()->sync($request->tags);
+        }else{
+        $post->tags()->sync(array());   
+        }
+
         Session::flash('success', 'This post was saved successfully.');
         return redirect()->route('posts.show', $post->id);
 
@@ -136,6 +180,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
+        $post->tags()->detach();
 
         $post->delete();
 

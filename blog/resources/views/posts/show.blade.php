@@ -8,6 +8,16 @@
 	<h1>{{ $post->title }}</h1>
 
 	<p class="lead">{{$post->body}}</p>
+	<hr>
+
+	<div class="tags">
+
+		@foreach ($post->tags as $tag)
+			<span class="label label-default">{{$tag->name}}</span>
+		@endforeach
+
+	</div>
+
 	</div>
 
 	<div class="col-md-4">
@@ -15,7 +25,12 @@
 		<dl class="dl-horizontal">
 		 	<label>Url:</label>
 		 	<p><a href="{{url('blog/'.$post->slug)}}">{{url('blog/'.$post->slug)}}</a></p>
-		 </dl>		
+		 </dl>	
+
+		 <dl class="dl-horizontal">
+		 	<label>Category:</label>
+		 	<p>{{$post->category->name}}</p>
+		 </dl>	
 
 		 <dl class="dl-horizontal">
 		 	<label>Create At:</label>

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
 use App\Category;
 use Session;
 use Image;
+
 
 
 class PostController extends Controller
@@ -61,11 +63,13 @@ class PostController extends Controller
 
         //store in the database
         $post = new Post;
+        $user = Auth::user();
 
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->category_id = $request->category_id;
         $post->body = $request->body;
+        $post->user_id = $user->id;
 
         //image save
         if ($request->hasFile('featured_image')){

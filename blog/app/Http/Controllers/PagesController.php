@@ -12,7 +12,7 @@ class PagesController extends Controller {
 		#receive from the model
 		#compile or process data from model
 		#pass that data to needed view
-		$posts = Post::orderBy('created_at', 'desc')->limit(4)->get();
+		$posts = Post::orderBy('created_at', 'desc')->limit(6)->get();
 		return view('pages.welcome')->withPosts($posts);
 	}
 

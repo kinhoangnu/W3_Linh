@@ -10,12 +10,15 @@
 
 @section('content')
 <div class="row">
-{!!Form::model($user, ['route'=>['profile.update', $user->id], 'method' => 'GET']) !!}
+{!!Form::model($user, ['route'=>['profile.update', $user->id], 'method' => 'GET', 'files' => true]) !!}
 	<div class="col-md-8">
 	{{Form::label('name', 'Name:')}}
 	{{Form::text('name', null, ["class"=>'form-control input-lg'])}}
 	{{Form::label('email','Email:')}}
 	{{Form::text('email',null, ['class'=>'form-control input-lg'])}}
+	{{Form::label('featured_image', 'Upload Picture:')}}
+	{{Form::file('featured_image')}}
+
 	</div>
 	<div class="col-md-4">
 		<div class="row">

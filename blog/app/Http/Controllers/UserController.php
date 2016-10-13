@@ -9,6 +9,7 @@ use Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use Session;
+use Image;
 
 
 class UserController extends Controller
@@ -47,7 +48,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -92,6 +93,16 @@ class UserController extends Controller
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
+        //save image
+        if ($request->hasFile('featured_image')){
+            $image = $request->file('featured_image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('image_profile\\' . $filename);
+            Image::make($image)->resize(250,250)->save($location);
+
+            $user->picture = $filename;
+            $user->save();
+        }
 
         $user->save();
 

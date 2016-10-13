@@ -3,14 +3,24 @@
 @section('title', "| User Profile")
 
 @section('content')
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-1">
+			<img src="{{ asset('image_profile/'.$user->picture) }}" > 
+		</div>
+		<div class="col-md-6 col-md-offset-1">
+				
+			<b>Username: {{$user->name}}</b><br>	
+			<b>User ID: {{$user->id}}</b><br>
+			<b>User's email address: {{$user->email}}</b><br>
+			<a href="{{route('profile.edit', $user->id)}}" class="btn btn-default btn-sm">Edit</a>		
+		</div>
+		
+	</div>
 
-	<h2>Username: {{$user->name}}</h2>		
-	<br>
-	<h3>User ID: {{$user->id}}</h3>
-	<br>
-	<h3>User's email address: {{$user->email}}</h3>
-	<br>
-	<a href="{{route('profile.edit', $user->id)}}" class="btn btn-default btn-sm">Edit</a>
+
+</div>
+
 
 
 
@@ -23,4 +33,4 @@
 		<hr>
 	</div>
 	<hr> -->
-@endsection
+	@endsection

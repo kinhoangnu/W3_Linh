@@ -5,13 +5,16 @@
 @section('content')
 
 <div class="row">
-	<div class="col-md-10">
+	<div class="col-md-9">
 	<h1>All Posts</h1>			
 	</div>
 
-	<div class="col-md-2">
+	<div class="col-md-3">
 		<a href="{{route('posts.create')}}" class="btn btn-lg btn-block btn-primary btn-h1-spacing">
 		Create New Post
+		</a>
+		<a href="/getPDF" class="btn btn-lg btn-block btn-primary btn-h1-spacing">
+		Download All Users
 		</a>
 	</div>
 	<div class="col-md-12">

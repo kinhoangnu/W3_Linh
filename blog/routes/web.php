@@ -26,9 +26,11 @@ Route::group(['middleware' => ['web']], function(){
 	Route::get('/user/{id}', [ 'as' => 'profile.edit', 'uses' => 'UserController@edit']);
 	Route::get('/user/update/{id}', [ 'as' => 'profile.update', 'uses' => 'UserController@update']);
 	Route::get('/user/showupdate/{id}', [ 'as' => 'profile.show', 'uses' => 'UserController@show']);
+	Route::get('/getPDF', 'PDFController@getPDF');
 
 	Auth::routes();
 
 	Route::get('/home', 'HomeController@index');
+
 });
 

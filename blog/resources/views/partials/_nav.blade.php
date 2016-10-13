@@ -32,6 +32,9 @@
 
             <ul class="dropdown-menu" role="menu">
             <li>
+                <a href="{{ url('/user') }}">
+                    User Profile
+                </a>
                 <a href="{{ url('/posts') }}">
                     Manage Posts
                 </a>

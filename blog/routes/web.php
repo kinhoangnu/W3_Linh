@@ -22,6 +22,10 @@ Route::group(['middleware' => ['web']], function(){
 	Route::get('/welcome', 'PagesController@getIndex');
 	Route::get('/', 'PagesController@getIndex');
 	Route::resource('posts', 'PostController');
+	Route::get('/user', 'UserController@index');
+	Route::get('/user/{id}', [ 'as' => 'profile.edit', 'uses' => 'UserController@edit']);
+	Route::get('/user/update/{id}', [ 'as' => 'profile.update', 'uses' => 'UserController@update']);
+	Route::get('/user/showupdate/{id}', [ 'as' => 'profile.show', 'uses' => 'UserController@show']);
 
 	Auth::routes();
 
